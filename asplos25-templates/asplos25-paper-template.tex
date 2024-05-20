@@ -271,7 +271,7 @@ provides them with a hint-based method for relocating these objects to the
 secondary heap. We will use Teraheap as a Real world system. We configure Teraheap to apply the supplementary heap to local and remote block devices and compare the performances of each block device system.
 
 \textbf{Workloads and Execution time breakdown.} We employ eight memory-intensive tasks from Spark-Bench and five LDBC Graphalytics suites for Giraph, generating datasets accordingly. Each experiment is run five times, and the average end-to-end execution time is recorded. Time breakdown includes 'other' time, S/D plus I/O time, minor GC time, and major GC time. 'Other' time covers mutator threads, potentially including I/O wait. The profiler operates with minimal overhead. We configure TeraHeap to allocate the first heap (H1) on DRAM and the second heap (H2) over a file in Local or Remote block device via memory-mapped I/O (mmio) we also limmit DRAM and H1 to a fixed size to create pressure and more I/O to H2. Table [\ref{tab:workloads}] shows the DRAM and H1 size in each workload, in Spark and Giraph, accordingly.
-\begin{table}[H]
+\begin{table}[h]
 \centering
 \resizebox{8.2cm}{2.4cm}{%
 \begin{tabular}{|c|l|r|r|}
@@ -297,7 +297,11 @@ secondary heap. We will use Teraheap as a Real world system. We configure Terahe
 \end{table}
 
 \section{Evaluation}
-
+\begin{figure}[H]
+\includegraphics{figures/plot_spark.png}\\
+\caption{Overall performance of TeraHeap with SPDK NVMe-oF exported device compared to TeraHeap with local device.}
+\label{fig:plot_spark}
+\end{figure}
 \section{Conclusions}
 
 \section{Acknowledgments}
