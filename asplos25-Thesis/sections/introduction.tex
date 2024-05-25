@@ -1,0 +1,67 @@
+\section{Introduction}
+%% Demand for more memory
+Big data analytics frameworks running on managed runtimes, such as Java virtual
+machines (JVM) are widely deployed in data-centers to perform data analysis over
+large amount of datasets. The amount of data increases with high rate but DRAM
+capacity in a single server scales slower than data growth. Existing approaches
+study the extension of the managed heap over fast storage devices (e.g., NVMe
+SSDs) and remote memory.
+
+%Today, cloud infrastructures running data-intensive applications encounter
+%numerous challenges in transferring data to-from block storage devices. 
+%With the
+%escalating demands of big data frameworks, the insufficiency of DRAM in scaling
+%to such magnitudes becomes apparent. Additionally, traditional approaches to
+%accessing local storage devices struggle to match the pace of data processing,
+%thereby becoming an overhead. Consequently, the rapid expansion of data
+%necessitates a swift and efficient mechanism for data movement to storage
+%devices.
+\par Extended heap approaches can be categorized based on their implementation over
+different storage types: local storage devices, remote storage devices, remote memory. Some systems use the capacity of a fast local storage device (e.g TeraHeap) by an extended heap over NVMe. In contrast, other works use remote storage device
+implementations. Other systems see that utilizing remote DRAM for
+extended heap operations (e.g Semeru, MemLiner, and Mako) offers high-speed
+access and minimize latency and ensure fast data transfer. However, current research lacks a comprehensive comparison of these
+techniques. None of the existing work adequately addresses the pros and cons of
+each approach or explains why one might be preferable over the others. This gap
+highlights a need for detailed evaluative studies that assess the performance,
+and reliability of each heap extension implementation
+method.
+
+%categorization of how you can have an extended heap approaches like using a extended heap over local storage device or over remote storage device or remote DRAM memory exist...
+
+%However, non of existing work provide a comparison between the techniques on what are the pros and cons and why they are better from one another...
+
+
+\par In this \textbf{comparative analysis}, we delve into possible strategies for
+achieving faster and more efficient block storage accessing while ensuring an
+appropriate size of the block storage. The first aspect of our investigation
+centers on comparing local storage devices, exemplified by NVMe SSDs, against
+remote storage devices and remote DRAM memory. NVMe SSDs, offer rapid data
+access and reliability. However, the efficiency of local storage devices in
+comparison to remote options remains a question mark and forms the core of our
+study. Remote DRAM memory, despite its remote positioning, may offer lower
+latency compared to remote storage devices due to its faster access times.
+However, its capacity is typically more constrained than storage devices. It's
+crucial to note the role of technological advancements such as SPDK NVMe over
+Fabrics (NVMe-oF) in mitigating latency concerns. SPDK NVMe-oF holds promise in
+reducing device latency, offering a potential solution to bridge the performance
+gap between different storage modalities. 
+
+ \par By employing micro-benchmarks we try to discern the inherent trade-offs. This
+evaluation is crucial for comprehensively understanding the landscape of storage
+solutions and their applicability in real-world scenarios. To assess the
+performance of block device setups, we leverage TeraHeap. TeraHeap extends the
+capabilities of the JVM and utilizes a second heap stored on a storage device.
+This approach allows for a meticulous evaluation of storage solutions, providing
+nuanced insights into their performance characteristics. Our evaluation process,
+empowered by TeraHeap, furnishes high-level results that offer valuable insights
+into the comparative advantages and limitations of each storage solution.
+
+\par The selection among these options requires careful consideration of factors such
+as workload requirements and infrastructure configurations. The insights
+acquired by this study will play a pivotal role in informing decision-making
+processes related to resource allocation and system design, thereby contributing
+to the ongoing discourse on efficient data management in contemporary computing
+environments.
+
+%\subsection{Key Contribution}

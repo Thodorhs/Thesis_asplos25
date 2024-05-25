@@ -1,0 +1,118 @@
+\section{Experimental Methodology}
+With our evaluation we try to answer: 
+
+1. Can remote storage options keep up with local ones in big data analytic
+    frameworks.
+
+2. How does data granularity affect remote options (e.g. 512B and 4KB).
+
+3. what are the overheads presented with these options.
+
+%\note{jk: Make the questions more specific. For example, add a question about
+%granularity (e.g. 512b and 4KB). So, think carefully what was the evaluation
+%about and write specific questions. Do not care if they are too much, we are
+%going to reduce/merge them.}
+\vspace{1em}
+
+For the evaluation we use two servers with Intel Xeon E5-2630 32 Cores @ 2.4
+GHz. Each server uses 256GB of DDR4 DRAM divided on two NUMA nodes, each with 16
+threads. For storage we use Samsung 970 EVO Plus 2 TB PCIe Gen 3.0 x4 NVMe SSD.
+Each server is equipped with Mellanox Technologies ConnectX-3 Network controller
+MT27500 with fibre ports compliant with the InfiniBand Architecture
+Specification . The servers run CentOS version 7.9 with Linux kernel version is
+5.4.267. Table [\ref{tab:serv_specs}] shows the server specifications.
+\begin{table}[H]
+\resizebox{8.5cm}{1cm}{%
+\begin{tabular}{cccccc}
+\textbf{ID} & \textbf{CPU}                                                                      & \textbf{DRAM}                                        & \textbf{Device}                                                                       & \textbf{NIC}                                                                       & \textbf{Kernel} \\ \hline
+Server 1    & \begin{tabular}[c]{@{}c@{}}Intel Xeon E5-2630\\  32 Cores @ 2.4 GHz.\end{tabular} & \begin{tabular}[c]{@{}c@{}}256GB\\ DDR4\end{tabular} & \begin{tabular}[c]{@{}c@{}}Samsung 970 EVO \\ Plus 2 TB PCIe \\ NVMe SSD\end{tabular} & \begin{tabular}[c]{@{}c@{}}Mellanox Technologies \\ ConnectX-3 MT2750\end{tabular} & 5.4.267         \\ \hline
+Server 1    & \begin{tabular}[c]{@{}c@{}}Intel Xeon E5-2630\\  32 Cores @ 2.4 GHz.\end{tabular} & \begin{tabular}[c]{@{}c@{}}256GB\\ DDR4\end{tabular} & \begin{tabular}[c]{@{}c@{}}Samsung 970 EVO \\ Plus 2 TB PCIe \\ NVMe SSD\end{tabular} & \begin{tabular}[c]{@{}c@{}}Mellanox Technologies \\ ConnectX-3 MT2750\end{tabular} & 5.4.267        
+\end{tabular}
+}
+\caption{Server specifications table.}
+\label{tab:serv_specs}
+\end{table}
+
+\par\textbf{Flexible I/O (FIO) Tester.}
+FIO is a widely used open-source tool in the Linux ecosystem for benchmarking
+and testing various I/O (input/output) workloads on storage devices. FIO
+provides detailed output reports, including metrics such as throughput, IOPS
+(input/output operations per second), latency, and CPU utilization. We use FIO to measure latency of each of the device setups shown in Table [\ref{tab:storage_configurations}]. 
+
+\begin{table}[h!]
+\centering
+\resizebox{8.8cm}{2.4cm}{%
+\begin{tabular}{>{\RaggedRight}p{5cm} >{\RaggedRight\arraybackslash}p{9cm}}
+\toprule
+\textbf{Configuration} & \textbf{Description} \\
+\midrule
+Local NVMe drive & Local Non-Volatile Memory Express (NVMe) storage drive. \\
+\addlinespace[1em]
+Local Ram-disk & Storage using a portion of system RAM as a high-speed drive. \\
+\addlinespace[1em]
+Network Block Device (NBD) with NVMe & Network Block Device configured to use an NVMe drive over the network. \\
+\addlinespace[1em]
+Network Block Device (NBD) with Ram-disk & Network Block Device configured to use a RAM-disk over the network. \\
+\addlinespace[1em]
+Local NVMe drive with SPDK User-Space drivers & Local NVMe drive managed with Storage Performance Development Kit (SPDK) user-space drivers. \\
+\addlinespace[1em]
+Local Ram-disk with SPDK User-Space drivers & Local RAM-disk managed with SPDK user-space drivers. \\
+\addlinespace[1em]
+NVMe-oF NVMe with SPDK User-Space drivers & NVMe over Fabrics (NVMe-oF) using NVMe drives managed with SPDK user-space drivers. \\
+\addlinespace[1em]
+NVMe-oF Ram-disk with SPDK User-Space drivers & NVMe-oF using RAM-disk managed with SPDK user-space drivers. \\
+\bottomrule
+\end{tabular}
+}
+\caption{Storage device setups.}
+\label{tab:storage_configurations}
+\end{table}
+
+\par\textbf{Netperf.} 
+Netperf is a benchmarking tool used to measure the performance of networking
+systems. It's designed to provide a standardized method for measuring networking
+performance between two systems. Netperf allows users to test various aspects of
+networking performance, such as throughput, latency, and jitter, across
+different network protocols like TCP (Transmission Control Protocol) and UDP
+(User Datagram Protocol). We will use Netperf to measure end-to-end latency of
+TCP (Transmission Control Protocol) To better understand the latency of systems
+like Network Block Device (NBD) which uses TCP to export the block device to the
+network.
+
+\par\textbf{TeraHeap.} Teraheap is a system that eliminates S/D overhead and expensive GC scans for a
+large portion of the objects in big data frameworks. TeraHeap enhances the
+managed runtime environment, particularly the Java Virtual Machine (JVM). It
+introduces a supplementary heap, designed for high-capacity storage, alongside
+the primary heap. This secondary heap utilizes fast storage and allows direct
+access to objects without the need for serialization or deserialization.
+Additionally, TeraHeap minimizes the garbage collection overhead by preventing
+the garbage collector from scanning the secondary heap. It takes advantage of
+frameworks' capability to designate certain objects for off-heap allocation and
+provides them with a hint-based method for relocating these objects to the
+secondary heap. We will use Teraheap as a Real world system. We configure Teraheap to apply the supplementary heap to local and remote block devices and compare the performances of each block device system.
+\par\textbf{ib\_read\_lat.} ib\_read\_lat is a benchmarking tool specifically for measuring InfiniBand (IB) latency. It evaluates the time taken for data to be transferred and received between InfiniBand endpoints. We will use it to measure the latency of transferring data between two Mellanox Technologies ConnectX-3 MT2750 network cards using the IB port.
+\par\textbf{Workloads and Execution time breakdown.} We employ eight memory-intensive tasks from Spark-Bench and five LDBC Graphalytics suites for Giraph, generating datasets accordingly. Each experiment is run five times, and the average end-to-end execution time is recorded. Time breakdown includes 'other' time, S/D plus I/O time, minor GC time, and major GC time. 'Other' time covers mutator threads, potentially including I/O wait. The profiler operates with minimal overhead. We configure TeraHeap to allocate the first heap (H1) on DRAM and the second heap (H2) over a file in Local or Remote block device via memory-mapped I/O (mmio) we also limmit DRAM and H1 to a fixed size to create pressure and more I/O to H2. Table [\ref{tab:workloads}] shows the DRAM and H1 size in each workload, in Spark and Giraph, accordingly.
+\begin{table}[h]
+\centering
+\resizebox{8.2cm}{2.4cm}{%
+\begin{tabular}{|c|l|r|r|}
+\hline
+\multicolumn{1}{|l|}{\textbf{Frameworks}} & \textbf{Benchmarks} & \multicolumn{1}{c|}{\textbf{TOTAL DRAM (GB)}} & \multicolumn{1}{c|}{\textbf{H1 (GB)}} \\ \hline
+\multirow{8}{*}{\rotatebox[origin=c]{90}{\textbf{Spark}}} & Pagerank & 80 & 64 \\ \cline{2-4} 
+ & Connected Components & 84 & 68 \\ \cline{2-4} 
+ & Linear Regression & 54 & 27 \\ \cline{2-4} 
+ & Logistic Regression & 54 & 27 \\ \cline{2-4} 
+ & Triangle Counts & 80 & 64 \\ \cline{2-4} 
+ & Shortest Path & 58 & 42 \\ \cline{2-4} 
+ & SVDPlusPlus & 40 & 24 \\ \cline{2-4} 
+ & SVM & 48 & 32 \\ \hline
+\multirow{5}{*}{\rotatebox[origin=c]{90}{\textbf{Giraph}}} & PageRank & 85 & 50 \\ \cline{2-4} 
+ & CDLP & 85 & 60 \\ \cline{2-4} 
+ & WCC & 85 & 60 \\ \cline{2-4} 
+ & BFS & 65 & 35 \\ \cline{2-4} 
+ & SSSP & 90 & 50 \\ \hline
+\end{tabular}%
+}
+\caption{Teraheap workload configuration table.}
+\label{tab:workloads}
+\end{table}
