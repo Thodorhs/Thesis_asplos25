@@ -3,7 +3,7 @@
 \par First we use Flexible I/O (FIO) Tester and create micro benchmarks to understand how much latency each different storage system adds. We configure FIO to use the libaio engine, random reads, direct I/O, 512 bytes and 4KB block size, 1 I/O depth and 1 thread.
 \par Figure \ref{fig:fio_512} shows the FIO report of latency with 512 request size of each storage system. "r" stands for ramdisk and "n" stands for NVMe, "OF" stands for NVMe-oF with SPDK User-Space drivers.
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/fio_512.pdf}\\
+  \includegraphics[width=\linewidth]{figures/fio_512.pdf}\\
 \caption{Average latency (usec) of local and remote storage systems with 512B request size.}
 \label{fig:fio_512}
 \end{figure}
@@ -13,7 +13,7 @@ Local NVMe haves an average of 14.16 usec latency and local ramdisk 2.04 usec 6.
 \par Similarly with 4KB block size we get the same overheads as shown in figure \ref{fig:fio_4k}. Here FIO reports more latency for moving the 4KB data locally and/or across network.
 
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/fio_4k.pdf}\\
+  \includegraphics[width=\linewidth]{figures/fio_4k.pdf}\\
 \caption{Average latency (usec) of local and remote storage systems with 4KB request size.}
 \label{fig:fio_4k}
 \end{figure}
@@ -21,14 +21,14 @@ Local NVMe haves an average of 14.16 usec latency and local ramdisk 2.04 usec 6.
 \subsection{TeraHeap performance with NVMe-oF}
 \par This section compares TeraHeap performance of two set ups one with local NVMe device and one with NVMe-oF exported NVMe with SPDK User-Space drivers. Figure \ref{fig:bench_spark} illustrates the performance of TeraHeap with Spark workloads for both setups.
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/bench_spark.pdf}\\
+  \includegraphics[width=\linewidth]{figures/bench_spark.pdf}\\
 \caption{TeraHeap Spark performance. local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:bench_spark}
 \end{figure}
 The two setups local NVMe device (L) and NVMe-oF exported NVMe with SPDK (R) with TeraHeap perform similarly with Spark workloads. Spark Workloads read objects from H2 but they don't change them, with spark heavy Write operations are missing. We can see that local setup outperforms the remote setup in Pagerank(PR), Connected Components(CC) and Logistic Regression(LgR) making the local setup 0.85\%, 3.55\% and 3.18\% faster accordingly. The big difference is in the SVM workload where the local setup outperforms the remote by 37.30\% \textbf{(why????)}. There are also cases where the remote setup is better. Workloads Linear Regression(LR), Triangle Counts(TR), Shortest Path(SSSP) and SVDPlusPlus(SVD) report that the remote setup is 4.76\%, 2.08\%, 1.37\% and 2.76\% quicker accordingly.
 \par Next we run Teraheap with the Giraph Workloads. These workloads read objects from H2 and also can change them. Here we expect heavy write operations that can stress the remote setup. Figure \ref{fig:bench_giraph} illustrates the performance of TeraHeap with Giraph workloads for both setups NVMe device (L) and NVMe-oF exported NVMe with SPDK (R).
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/bench_giraph.pdf}\\
+  \includegraphics[width=\linewidth]{figures/bench_giraph.pdf}\\
 \caption{TeraHeap Giraph performance. local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:bench_giraph}
 \end{figure}
@@ -40,24 +40,24 @@ Here, due to the write operations, the remote setup (R) never manages to exceed 
 \par Next we examine Giraph figures \ref{fig:giraph_r} and \ref{fig:giraph_w} show reads and writes accordingly. We can confirm that writes are close or more than reads due to Giraph benchmarks changing off-heap objects. focusing on the writes we can see that the Gigabytes wrote for both the local setup (L) and the remote setup (R) are close. In the PageRank(PR)	and CDLP workloads where the local setup (L) outperforms the most of the remote setup (R) (figure \ref{fig:bench_giraph} 22.97\% and 16.24\% faster) we can see more reads (figure \ref{fig:giraph_r}) for the remote setup due to more major GC's.
 
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/spark_r.pdf}\\
+  \includegraphics[width=\linewidth]{figures/spark_r.pdf}\\
 \caption{Teraheap Spark workloads reads (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:spark_r}
 \end{figure}
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/spark_w.pdf}\\
+  \includegraphics[width=\linewidth]{figures/spark_w.pdf}\\
 \caption{Teraheap Spark workloads writes (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:spark_w}
 \end{figure}
 \vspace{10em}
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/giraph_r.pdf}\\
+  \includegraphics[width=\linewidth]{figures/giraph_r.pdf}\\
 \caption{Teraheap Giraph workloads reads (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:giraph_r}
 \end{figure}
 
 \begin{figure}[H]
-  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/giraph_w.pdf}\\
+  \includegraphics[width=\linewidth]{figures/giraph_w.pdf}\\
 \caption{Teraheap Giraph workloads writes (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:spark_w}
 \end{figure}

@@ -17,13 +17,13 @@ Development Kit (SPDK).
  \end{itemize}
  We will focus on the Network Block Device (TCP version). We use the TCP version to investigate the overheads added by the TCP protocol stack and compare it with other mechanisms for exporting block devices over the network.With this implementation compiled in the kernel we can use 2 drivers-modules the nbd-client and the nbd-server Figure \ref{fig:nbd_path} shows an overview of a NBD system.
  \begin{figure}[h]
-    \includegraphics[scale=0.22]{asplos25-Thesis/figures/nbd-path.png}\\
+    \includegraphics[scale=0.22]{figures/nbd-path.png}\\
     \caption{Overview of an NBD system.}
     \label{fig:nbd_path}
   \end{figure}
 \par The nbd-client usually resides in the OS kernel and exposes a block device interface to the rest of the kernel, so that it may appear as an ordinary, directly-attached storage device. The client passes the block requests to the NBD driver where they are encapsulated as NBD network messages and sent to the server via TCP. Finally the User-Space server upon receiving the NBD request issues standard I/O to the relevant block device and then responds Figure \ref{fig:nbd_path2} shows a more in depth I/O path using NBD TCP Version. 
 \begin{figure}[h]
-    \includegraphics[scale=0.18]{asplos25-Thesis/figures/nbd-path2.png}\\
+    \includegraphics[scale=0.18]{figures/nbd-path2.png}\\
     \caption{I/O Path of NBD system.}
     \label{fig:nbd_path2}
   \end{figure}
@@ -52,7 +52,7 @@ servers built atop these foundational components.
 
 \par SPDK operates entirely in user space, bypassing the kernel entirely for I/O operations. By eliminating the overhead of kernel context switches and system calls, SPDK can achieve significantly higher performance and lower latency compared to traditional storage solutions that rely on kernel-level operations. Memory management in SPDK is highly optimized, utilizing techniques such as large memory buffers, memory pooling, and zero-copy operations. Large memory buffers are allocated upfront, often using huge pages, to ensure contiguous memory allocation and reduce fragmentation. Memory pooling minimizes the overhead of dynamic memory allocation and deallocation, while zero-copy operations eliminate unnecessary data copies, further enhancing performance. Integration with the Data Plane Development Kit (DPDK) enhances SPDK's performance by leveraging DPDK's efficient packet processing capabilities for networked storage solutions. This integration enables SPDK to handle network I/O with minimal overhead, ensuring high throughput and low latency for storage applications deployed in networked environments. SPDK's support for NVMe-oF extends the NVMe protocol over fabrics, allowing remote access to NVMe storage devices with minimal overhead. This involves sophisticated handling of NVMe commands and data over high-speed networks, optimizing performance and scalability for distributed storage solutions.
 \begin{figure}[H]
-\includegraphics[scale=0.18]{asplos25-Thesis/figures/spdk-target.png}\\
+\includegraphics[scale=0.18]{figures/spdk-target.png}\\
 \caption{Overview of SPDK NvmeOF Target-Initiator system.}
 \label{fig:spdk}
 \end{figure}
