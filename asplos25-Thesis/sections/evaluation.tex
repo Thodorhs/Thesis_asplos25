@@ -19,7 +19,20 @@ Local NVMe haves an average of 14.16 usec latency and local ramdisk 2.04 usec 6.
 \end{figure}
 
 \subsection{TeraHeap performance with NVMe-oF}
-\par This section compares TeraHeap performance of two set ups one with local NVMe device and one with NVMe-oF exported NVMe with SPDK User-Space drivers. Figure [\ref{}] illustrates the performance of TeraHeap with Spark workloads for both setups. ....
+\par This section compares TeraHeap performance of two set ups one with local NVMe device and one with NVMe-oF exported NVMe with SPDK User-Space drivers. Figure [\ref{fig:bench_spark}] illustrates the performance of TeraHeap with Spark workloads for both setups.
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/bench_spark.pdf}\\
+\caption{TeraHeap Spark performance. local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\label{fig:bench_spark}
+\end{figure}
+The two setups local NVMe device (L) and NVMe-oF exported NVMe with SPDK (R) with TeraHeap perform similarly with Spark workloads. Spark Workloads read objects from H2 but they don't change them, with spark heavy Write operations are missing. We can see that local setup outperforms the remote setup in Pagerank(PR), Connected Components(CC) and Logistic Regression(LgR) making the remote setup by 0.85\%, 3.55\% and 3.18\% accordingly. The big difference is in the SVM workload where the local setup outperforms the remote by 37.30\% (why????). There are also cases where the remote setup is better. Workloads Linear Regression(LR), Triangle Counts(TR), Shortest Path(SSSP) and SVDPlusPlus(SVD) report that the remote setup is 4.76\%, 2.08\%, 1.37\% and 2.76\% quicker accordingly.
+\par Moving on with the Giraph Workloads. Giraph workloads read objects from H2 and also can change them. Here we expect heavy write operations that can stress the remote setup. Figure [\ref{fig:bench_giraph}] illustrates the performance of TeraHeap with Giraph workloads for both setups.
+\begin{figure}[H]
+  \includegraphics[width=\linewidth]{asplos25-Thesis/figures/bench_giraph.pdf}\\
+\caption{TeraHeap Giraph performance. local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\label{fig:bench_giraph}
+\end{figure}
+
 \begin{itemize}
     \item start by explaining FIO results and that we will focus on latency
     \item show fio results explain the graph (break down loc numbers, say nbd is slow-show netperf tcp latency number, break down spdk numbers(reference to sequential FIO latency number-cache hit))
