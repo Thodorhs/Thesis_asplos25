@@ -1,6 +1,6 @@
-PAPER = asplos25-paper-template
+PAPER = paper
 TEX = $(wildcard *.tex)
-BIB = references.bib
+BIB = paper.bib
 FIGS = $(wildcard figures/*.pdf figures/*.png graphs/*.pdf graphs/*.png)
 
 .PHONY: all clean
