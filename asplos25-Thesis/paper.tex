@@ -34,11 +34,7 @@
 
 \author{Theodoros Pontzouktzidis} % removed for anonymity
 
-\begin{abstract}
-\par Today Big data analytics frameworks running on managed runtimes like Java Virtual Machines (JVM) are extensively used in data centers for analyzing large datasets. Existing research has explored extending the managed heap using fast local storage devices (e.g., NVMe SSDs) and remote memory. Yet, a comprehensive comparison of these techniques is lacking, underscoring the need for detailed studies evaluating their performance, and reliability.
-\par In our comparative analysis, we investigate strategies for optimizing block storage access and sizing, focusing on local NVMe SSDs versus remote storage devices and DRAM. We break down and examine the latencies of local and remote storage systems, including SPDK NVMe over Fabrics (NVMe-oF) and Network Block Device (NBD). Using TeraHeap, which extends JVM capabilities by utilizing a second heap on a storage device, we compare its performance with both local and remote NVMe storage options. Our evaluation, conducted using 13 widely-used applications in two real-world big data frameworks, Spark and Giraph, demonstrates that remote NVMe can match the performance of local NVMe. \par This study provides valuable insights into the performance characteristics of various storage solutions, informing decisions on resource allocation and system design for efficient data management in modern computing environments. 
-\end{abstract}
-
+\input{abstract}
 \keywords {large analytics datasets, large managed heaps, memory hierarchy, fast storage devices, remote storage, remote memory, Systems Performance}
 
 
