@@ -17,19 +17,7 @@ SSDs) and remote memory.
 %necessitates a swift and efficient mechanism for data movement to storage
 %devices.
 
-\note{jk: write it better. start like that. Related work that extend the managed
-  heap beyond DRAM either using local storage devices~\cite{XXX} and
-remote memory~\cite{XXXX}} Extended heap approaches can be categorized based on their implementation over
-different storage types: local storage devices, remote storage devices, remote
-memory. Some systems use the capacity of a fast local storage device (e.g
-TeraHeap) by an extended heap over NVMe \note{jk: SSD}. In contrast, other works use remote
-storage device implementations \note{jk: there are not work that use remote
-storage devices}. Other systems see that utilizing remote DRAM for
-extended heap operations (e.g Semeru, MemLiner, and Mako) offers high-speed
-access and minimize latency and ensure fast data transfer \note{jk: this
-sentence does not read very well. I cannot understand what do you want to say.
-Remember write small sentences and each sentence should state one thing. Each
-next sentence should explain the previous one.}. However, current
+Related work that extend the managed heap beyond local DRAM either uses local storage devices~\cite{XXX} or remote memory~\cite{XXXX}. However, current
 research lacks a comprehensive comparison of these techniques. None of the
 existing work adequately addresses the pros and cons of each approach or
 explains why one might be preferable over the others. This gap highlights a need
