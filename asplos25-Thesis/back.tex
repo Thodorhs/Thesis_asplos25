@@ -2,8 +2,8 @@
 
 In this section, we discuss the design of state-of-the art systems that provide
 access to remote memory and storage. Specifically, in our study we use Network
-Block Device (NBD), NVMe over Fabrics (NVMe-oF), and the Storage Performance
-Development Kit (SPDK).
+Block Device (NBD) ~\cite{nbd}, NVMe over Fabrics (NVMe-oF) ~\cite{nvme-of}, and the Storage Performance
+Development Kit (SPDK) ~\cite{spdk}.
 \subsection{Network Block Device (NBD)}
  Network Block Device (NBD) is a network protocol that can be used to export a block device from a server where the block device resides to a client. There are multiple NBD implementations
  some of them are :
@@ -15,7 +15,7 @@ Development Kit (SPDK).
  \item  A \textbf{Windows} client implementation exists as part of the RBD implementation of Ceph for Windows.
  \item  \textbf{lwNBD} is a NBD server library, targetting bare metal or OS embedded system. It has a plugin architecture.
  \end{itemize}
- We will focus on the Network Block Device (TCP version). We use the TCP version to investigate the overheads added by the TCP protocol stack and compare it with other mechanisms for exporting block devices over the network.With this implementation compiled in the kernel we can use 2 drivers-modules the nbd-client and the nbd-server Figure \ref{fig:nbd_path} shows an overview of a NBD system.
+ We will focus on the Network Block Device (TCP version) ~\cite{nbd}. We use the TCP version to investigate the overheads added by the TCP protocol stack and compare it with other mechanisms for exporting block devices over the network.With this implementation compiled in the kernel we can use 2 drivers-modules the nbd-client and the nbd-server Figure \ref{fig:nbd_path} shows an overview of a NBD system.
  \begin{figure}[h]
     \includegraphics[scale=0.22]{figures/nbd-path.png}\\
     \caption{Overview of an NBD system.}
@@ -29,7 +29,7 @@ Development Kit (SPDK).
   \end{figure}
 
 \subsection{NVMe over Fabrics (NVMe-oF)}
-NVMe over Fabrics (NVMe-oF) is a protocol specification designed for connecting
+NVMe over Fabrics (NVMe-oF) ~\cite{nvme-of} is a protocol specification designed for connecting
 hosts to storage systems over a network using the NVMe protocol. It enables the
 transfer of data between a host computer and a target solid-state storage device
 or system through network communication. This protocol utilizes NVMe
@@ -37,7 +37,7 @@ message-based commands to facilitate data transfers, supporting various
 networking technologies such as Ethernet, Fibre Channel (FC), and InfiniBand.
 
 \subsection{Storage Performance Development Kit (SPDK)}
-The Storage Performance Development Kit (SPDK) is a versatile toolkit tailored
+The Storage Performance Development Kit (SPDK) ~\cite{spdk} is a versatile toolkit tailored
 for crafting high-performance, scalable storage applications in user-mode
 environments. Its architecture revolves around several core principles aimed at
 optimizing performance like User-Space Drivers, Polling Mechanism and lockless
@@ -50,7 +50,7 @@ unification, queue management for resource constraints, and logical volume
 administration. SPDK extends its capabilities with NVMe-oF, iSCSI, and vhost
 servers built atop these foundational components. 
 
-\par SPDK operates entirely in user space, bypassing the kernel entirely for I/O operations. By eliminating the overhead of kernel context switches and system calls, SPDK can achieve significantly higher performance and lower latency compared to traditional storage solutions that rely on kernel-level operations. Memory management in SPDK is highly optimized, utilizing techniques such as large memory buffers, memory pooling, and zero-copy operations. Large memory buffers are allocated upfront, often using huge pages, to ensure contiguous memory allocation and reduce fragmentation. Memory pooling minimizes the overhead of dynamic memory allocation and deallocation, while zero-copy operations eliminate unnecessary data copies, further enhancing performance. Integration with the Data Plane Development Kit (DPDK) enhances SPDK's performance by leveraging DPDK's efficient packet processing capabilities for networked storage solutions. This integration enables SPDK to handle network I/O with minimal overhead, ensuring high throughput and low latency for storage applications deployed in networked environments. SPDK's support for NVMe-oF extends the NVMe protocol over fabrics, allowing remote access to NVMe storage devices with minimal overhead. This involves sophisticated handling of NVMe commands and data over high-speed networks, optimizing performance and scalability for distributed storage solutions.
+\par SPDK operates entirely in user space, bypassing the kernel entirely for I/O operations. By eliminating the overhead of kernel context switches and system calls, SPDK can achieve significantly higher performance and lower latency compared to traditional storage solutions that rely on kernel-level operations. Memory management in SPDK is highly optimized, utilizing techniques such as large memory buffers, memory pooling, and zero-copy operations. Large memory buffers are allocated upfront, often using huge pages, to ensure contiguous memory allocation and reduce fragmentation. Memory pooling minimizes the overhead of dynamic memory allocation and deallocation, while zero-copy operations eliminate unnecessary data copies, further enhancing performance. Integration with the Data Plane Development Kit (DPDK) enhances SPDK's performance by leveraging DPDK's ~\cite{dpdk} efficient packet processing capabilities for networked storage solutions. This integration enables SPDK to handle network I/O with minimal overhead, ensuring high throughput and low latency for storage applications deployed in networked environments. SPDK's support for NVMe-oF extends the NVMe protocol over fabrics, allowing remote access to NVMe storage devices with minimal overhead. This involves sophisticated handling of NVMe commands and data over high-speed networks, optimizing performance and scalability for distributed storage solutions.
 \begin{figure}[H]
 \includegraphics[scale=0.18]{figures/spdk-target.png}\\
 \caption{Overview of SPDK NvmeOF Target-Initiator system.}

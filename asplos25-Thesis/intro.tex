@@ -17,7 +17,7 @@ SSDs) and remote memory.
 %necessitates a swift and efficient mechanism for data movement to storage
 %devices.
 
-Related work that extend the managed heap beyond local DRAM either uses local storage devices~\cite{XXX} or remote memory~\cite{XXXX}. However, current
+Related work that extend the managed heap beyond local DRAM either uses local storage devices like TeraHeap ~\cite{teraheap} or remote memory like Mako ~\cite{mako}. However, current
 research lacks a comprehensive comparison of these techniques. None of the
 existing work adequately addresses the pros and cons of each approach or
 explains why one might be preferable over the others. This gap highlights a need
@@ -38,7 +38,7 @@ remote options remains a question mark and forms the core of our study. Remote
 DRAM memory, despite its remote positioning, may offer lower latency compared to
 remote storage devices due to its faster access times. However, its capacity is
 typically more constrained than storage devices. It's crucial to note the role
-of technological advancements such as SPDK NVMe over Fabrics (NVMe-oF) in
+of technological advancements such as SPDK NVMe over Fabrics (NVMe-oF) ~\cite{spdk} in
 mitigating latency concerns. SPDK NVMe-oF holds promise in reducing device
 latency, offering a potential solution to bridge the performance gap between
 different storage modalities. 
@@ -46,7 +46,7 @@ different storage modalities.
 By employing micro-benchmarks we try to discern the inherent trade-offs. This
 evaluation is crucial for comprehensively understanding the landscape of storage
 solutions and their applicability in real-world scenarios. To assess the
-performance of block device setups, we leverage TeraHeap. TeraHeap extends the
+performance of block device setups, we leverage TeraHeap. TeraHeap ~\cite{teraheap} extends the
 capabilities of the JVM and utilizes a second heap stored on a storage device.
 This approach allows for a meticulous evaluation of storage solutions, providing
 nuanced insights into their performance characteristics. Our evaluation process,

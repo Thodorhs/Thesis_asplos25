@@ -18,7 +18,7 @@ GHz. Each server uses 256GB of DDR4 DRAM divided on two NUMA nodes, each with 16
 threads. For storage we use Samsung 970 EVO Plus 2 TB PCIe Gen 3.0 x4 NVMe SSD.
 Each server is equipped with Mellanox Technologies ConnectX-3 Network controller
 MT27500 with fibre ports compliant with the InfiniBand Architecture
-Specification . The servers run CentOS version 7.9 with Linux kernel version is
+Specification ~\cite{infiniband}. The servers run CentOS version 7.9 with Linux kernel version is
 5.4.267. Table \ref{tab:serv_specs} shows the server specifications.
 \begin{table}[H]
 \resizebox{8.5cm}{1cm}{%
@@ -33,7 +33,7 @@ Server 1    & \begin{tabular}[c]{@{}c@{}}Intel Xeon E5-2630\\  32 Cores @ 2.4 GH
 \end{table}
 
 \paragraph{Flexible I/O (FIO) Tester.}
-FIO is a widely used open-source tool in the Linux ecosystem for benchmarking
+FIO ~\cite{fio} is a widely used open-source tool in the Linux ecosystem for benchmarking
 and testing various I/O (input/output) workloads on storage devices. FIO
 provides detailed output reports, including metrics such as throughput, IOPS
 (input/output operations per second), latency, and CPU utilization. We configure FIO to use the
@@ -71,7 +71,7 @@ NVMe-oF Ram-disk with SPDK User-Space drivers & NVMe-oF using RAM-disk managed w
 \end{table}
 
 \paragraph{Netperf.} 
-Netperf is a benchmarking tool used to measure the performance of networking
+Netperf ~\cite{netperf} is a benchmarking tool used to measure the performance of networking
 systems. It's designed to provide a standardized method for measuring networking
 performance between two systems. Netperf allows users to test various aspects of
 networking performance, such as throughput, latency, and jitter, across
@@ -81,7 +81,7 @@ TCP (Transmission Control Protocol) To better understand the latency of systems
 like Network Block Device (NBD) which uses TCP to export the block device to the
 network.
 
-\paragraph{TeraHeap.} Teraheap is a system that eliminates S/D overhead and expensive GC scans for a
+\paragraph{TeraHeap.} Teraheap ~\cite{teraheap} is a system that eliminates S/D overhead and expensive GC scans for a
 large portion of the objects in big data frameworks. TeraHeap enhances the
 managed runtime environment, particularly the Java Virtual Machine (JVM). It
 introduces a supplementary heap, designed for high-capacity storage, alongside
@@ -93,12 +93,12 @@ frameworks' capability to designate certain objects for off-heap allocation and
 provides them with a hint-based method for relocating these objects to the
 secondary heap. We will use Teraheap as a Real world system. We configure Teraheap to apply the supplementary heap to local and remote block devices and compare the performances of each block device system.
 
-\paragraph{ib\_read\_lat.} ib\_read\_lat is a benchmarking tool specifically for measuring InfiniBand (IB) latency. It evaluates the time taken for data to be transferred and received between InfiniBand endpoints. We will use it to measure the latency of transferring data between two Mellanox Technologies ConnectX-3 MT2750 network cards using the IB port.
+\paragraph{ib\_read\_lat.} ib\_read\_lat is a micro-benchmark from the Perftest tool ~\cite{perftest}. specifically designed for measuring InfiniBand (IB) latency. It evaluates the time taken for data to be transferred and received between InfiniBand endpoints. We will use it to measure the latency of transferring data between two Mellanox Technologies ConnectX-3 MT2750 network cards using the IB port.
 
-\paragraph{Workloads and Execution time breakdown.} We employ eight memory-intensive tasks from Spark-Bench and five LDBC Graphalytics suites for Giraph, generating datasets accordingly. Each experiment is run five times, and the average end-to-end execution time is recorded. Time breakdown includes 'other' time, S/D plus I/O time, minor GC time, and major GC time. 'Other' time covers mutator threads, potentially including I/O wait. The profiler operates with minimal overhead. We configure TeraHeap to allocate the first heap (H1) on DRAM and the second heap (H2) over a file in Local or Remote block device via memory-mapped I/O (mmio) we also limmit DRAM and H1 to a fixed size to create pressure and more I/O to H2. Table \ref{tab:workloads} shows the DRAM and H1 size in each workload, in Spark and Giraph, accordingly.
-\begin{table}[h]
+\paragraph{Workloads and Execution time breakdown.} We employ eight memory-intensive tasks from Spark-Bench ~\cite{spark} and five LDBC Graphalytics suites for Giraph ~\cite{giraph}, generating datasets accordingly. Each experiment is run five times, and the average end-to-end execution time is recorded. Time breakdown includes 'other' time, S/D plus I/O time, minor GC time, and major GC time. 'Other' time covers mutator threads, potentially including I/O wait. The profiler operates with minimal overhead. We configure TeraHeap to allocate the first heap (H1) on DRAM and the second heap (H2) over a file in Local or Remote block device via memory-mapped I/O (mmio) we also limmit DRAM and H1 to a fixed size to create pressure and more I/O to H2. Table \ref{tab:workloads} shows the DRAM and H1 size in each workload, in Spark and Giraph, accordingly.
+\begin{table}[H]
 \centering
-\resizebox{8.2cm}{2.4cm}{%
+\resizebox{8cm}{2.1cm}{%
 \begin{tabular}{|c|l|r|r|}
 \hline
 \multicolumn{1}{|l|}{\textbf{Frameworks}} & \textbf{Benchmarks} & \multicolumn{1}{c|}{\textbf{TOTAL DRAM (GB)}} & \multicolumn{1}{c|}{\textbf{H1 (GB)}} \\ \hline
