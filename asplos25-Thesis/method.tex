@@ -1,14 +1,15 @@
 \section{Experimental Methodology}
 With our evaluation we try to answer: 
 
-\begin{enumerate}[itemsep=2pt]
-    \item Which remote storage option - remote device or remote memory - can match the latency of traditional local storage.
-    \item How does data granularity affect remote and local options (e.g. 512B and 4KB).
+\begin{enumerate}[itemsep=1.5pt]
+    \item Which remote storage option - remote device or memory - can match the latency of traditional local storage.
+    \item How does data granularity affect remote and local options (e.g. \SI{512}{B} and \SI{4}{KB}).
     \item What overheads are presented with remote device systems NBD and NVMe-oF.
+    \item Can SPDK NVMe-oF match up against local drive in big data analytics.
 \end{enumerate}
 
 %\note{jk: Make the questions more specific. For example, add a question about
-%granularity (e.g. 512b and 4KB). So, think carefully what was the evaluation
+%granularity (e.g. 512b and \SI{4}{KB}). So, think carefully what was the evaluation
 %about and write specific questions. Do not care if they are too much, we are
 %going to reduce/merge them.}
 \vspace{1em}
@@ -37,7 +38,7 @@ FIO ~\cite{fio} is a widely used open-source tool in the Linux ecosystem for ben
 and testing various I/O (input/output) workloads on storage devices. FIO
 provides detailed output reports, including metrics such as throughput, IOPS
 (input/output operations per second), latency, and CPU utilization. We configure FIO to use the
-libaio engine, random reads, direct I/O, 512 bytes and 4KB block size, 1 I/O
+libaio engine, random reads, direct I/O, \SI{512}{B} bytes and \SI{4}{KB} block size, 1 I/O
 depth and 1 thread to measure the latency of all the device setups shown in Table
 \ref{tab:storage_configurations}. 
 
@@ -81,7 +82,7 @@ TCP (Transmission Control Protocol) To better understand the latency of systems
 like Network Block Device (NBD) which uses TCP to export the block device to the
 network.
 
-\paragraph{TeraHeap.} Teraheap ~\cite{teraheap} is a system that eliminates S/D overhead and expensive GC scans for a
+\paragraph{TeraHeap.} TeraHeap ~\cite{teraheap} is a system that eliminates S/D overhead and expensive GC scans for a
 large portion of the objects in big data frameworks. TeraHeap enhances the
 managed runtime environment, particularly the Java Virtual Machine (JVM). It
 introduces a supplementary heap, designed for high-capacity storage, alongside
@@ -91,7 +92,7 @@ Additionally, TeraHeap minimizes the garbage collection overhead by preventing
 the garbage collector from scanning the secondary heap. It takes advantage of
 frameworks' capability to designate certain objects for off-heap allocation and
 provides them with a hint-based method for relocating these objects to the
-secondary heap. We will use Teraheap as a Real world system. We configure Teraheap to apply the supplementary heap to local and remote block devices and compare the performances of each block device system.
+secondary heap. We will use TeraHeap as a Real world system. We configure TeraHeap to apply the supplementary heap to local and remote block devices and compare the performances of each block device system.
 
 \paragraph{ib\_read\_lat.} ib\_read\_lat is a micro-benchmark from the Perftest tool ~\cite{perftest}. specifically designed for measuring InfiniBand (IB) latency. It evaluates the time taken for data to be transferred and received between InfiniBand endpoints. We will use it to measure the latency of transferring data between two Mellanox Technologies ConnectX-3 MT2750 network cards using the IB port.
 
@@ -117,6 +118,6 @@ secondary heap. We will use Teraheap as a Real world system. We configure Terahe
  & SSSP & 90 & 50 \\ \hline
 \end{tabular}%
 }
-\caption{Teraheap workload configuration table.}
+\caption{TeraHeap workload configuration table.}
 \label{tab:workloads}
 \end{table}

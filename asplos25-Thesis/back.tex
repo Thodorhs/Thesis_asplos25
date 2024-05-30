@@ -15,7 +15,7 @@ Development Kit (SPDK) ~\cite{spdk}.
  \item  A \textbf{Windows} client implementation exists as part of the RBD implementation of Ceph for Windows.
  \item  \textbf{lwNBD} is a NBD server library, targetting bare metal or OS embedded system. It has a plugin architecture.
  \end{itemize}
- We will focus on the Network Block Device (TCP version) ~\cite{nbd}. We use the TCP version to investigate the overheads added by the TCP protocol stack and compare it with other mechanisms for exporting block devices over the network.With this implementation compiled in the kernel we can use 2 drivers-modules the nbd-client and the nbd-server Figure \ref{fig:nbd_path} shows an overview of a NBD system.
+ We will focus on the Network Block Device (TCP version) ~\cite{nbd}. We use the TCP version to investigate the overheads added by the TCP protocol stack and compare it with other mechanisms for exporting block devices over the network. With this implementation compiled in the kernel we can use 2 drivers-modules the nbd-client and the nbd-server Figure \ref{fig:nbd_path} shows an overview of a NBD system.
  \begin{figure}[h]
     \includegraphics[scale=0.22]{figures/nbd-path.png}\\
     \caption{Overview of an NBD system.}
