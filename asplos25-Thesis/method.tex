@@ -49,19 +49,19 @@ depth and 1 thread to measure the latency of all the device setups shown in Tabl
 \hline
 LOC\_n & Local Non-Volatile Memory Express (NVMe) storage drive. \\
 \hline
-LOC\_r & Storage using a portion of system RAM as a high-speed drive. \\
+LOC\_r & Local Ram-disk. \\
 \hline
 NBD\_n & Network Block Device (NBD) configured to use an NVMe drive over the network. \\
 \hline
-NBD\_r & Network Block Device (NBD) configured to use a RAM-disk over the network. \\
+NBD\_r & Network Block Device (NBD) configured to use a Ram-disk over the network. \\
 \hline
 SPDK\_n & Local NVMe drive managed with Storage Performance Development Kit (SPDK) user-space drivers. \\
 \hline
-SPDK\_r & Local RAM-disk managed with SPDK user-space drivers. \\
+SPDK\_r & Local Ram-disk managed with SPDK user-space drivers. \\
 \hline
 OF\_n & NVMe over Fabrics (NVMe-oF) using NVMe drives managed with SPDK user-space drivers. \\
 \hline
-OF\_r & NVMe-oF using RAM-disk managed with SPDK user-space drivers. \\
+OF\_r & NVMe-oF using Ram-disk managed with SPDK user-space drivers. \\
 \hline
 \end{tabular}
 \caption{Storage device setups.}
@@ -74,7 +74,7 @@ OF\_r & NVMe-oF using RAM-disk managed with SPDK user-space drivers. \\
 
 \paragraph{Netperf.} 
 Netperf ~\cite{netperf} is a benchmarking tool used to measure the performance of networking
-systems. It's designed to provide a standardized method for measuring networking
+systems. It is designed to provide a standardized method for measuring networking
 performance between two systems. Netperf allows users to test various aspects of
 networking performance, such as throughput, latency, and jitter, across
 different network protocols like TCP (Transmission Control Protocol) and UDP

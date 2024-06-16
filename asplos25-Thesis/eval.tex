@@ -37,16 +37,16 @@ device layer (bdev) which will not be compatible for later experiments with Tera
 Similarly, with \SI{4}{KB} block size we get the same overheads. Here FIO reports more latency for moving the \SI{4}{KB} data locally
 and/or across network. The NVMe-oF NVMe with SPDK achieving 25.69 $\mu$s and the
 NVMe-oF Ram-disk with SPDK reaching 16.66 $\mu$s average latency (nearly as fast
-as the local NVMe at 14.16 microseconds) are suitable to proceed with our
+as the local NVMe at 14.16 $\mu$s) are suitable to proceed with our
 evaluation using TeraHeap.
 
 We also use FIO to measure the average throughput each storage system can achieve. Figure \ref{fig:fio_th} shows the average throughput with \SI{512}{B} and \SI{4}{KB} request size of each storage system. 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/fio_th.pdf}\\
 \caption{Average Throughput (MB/s) of local and remote storage systems with \SI{512}{B} and \SI{4}{KB} request size. "r" stands for Ram-disk and "n" stands for NVMe, "OF" stands for NVMe-oF with SPDK User-Space drivers.}
 \label{fig:fio_th}
 \end{figure}
-Focusing on \SI{4}{KB} local SSD FIO reports \SI{3127}{MB/s} average throughput. Previously we determined that the two best set-ups latency wise are NVMe-oF NVMe with SPDK and NVMe-oF Ram-disk with SPDK. Here these setups manage \SI{3078}{MB/s} and \SI{3090}{MB/s} average throughput accordingly. Local SSD performs with 1.01$\times$ better average throughput. Next NBD is under performing, both SSD and Ram-disk have 2.18$\times$ and 2.47$\times$ lower average throughput compared to local SSD accordingly. We confirm that The NVMe-oF NVMe with SPDK achieving \SI{3078}{MB/s} and the
+Focusing on \SI{4}{KB} local SSD FIO reports \SI{3127}{MB/s} average throughput. Previously we determined that the two best set-ups for latency are NVMe-oF NVMe with SPDK and NVMe-oF Ram-disk with SPDK. Here these setups manage \SI{3078}{MB/s} and \SI{3090}{MB/s} average throughput accordingly. Local SSD performs with 1.01$\times$ better average throughput. Next NBD is under performing, both SSD and Ram-disk have 2.18$\times$ and 2.47$\times$ lower average throughput compared to local SSD accordingly. We confirm that The NVMe-oF NVMe with SPDK achieving \SI{3078}{MB/s} and the
 NVMe-oF Ram-disk with SPDK reaching \SI{3090}{MB/s} average throughput (nearly as fast
 as the local NVMe at \SI{3127}{MB/s}) are suitable to proceed with our
 evaluation using TeraHeap.
@@ -89,10 +89,10 @@ Here, due to the write operations, the remote setup (R) never manages to exceed 
 \caption{TeraHeap Giraph performance. local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
 \label{fig:ram_giraph}
 \end{figure}
-Here TeraHeap setups local NVMe device (L) and NVMe-oF exported Ram-disk with
+Here the TeraHeap setups local NVMe device (L) and NVMe-oF exported Ram-disk with
 SPDK (R) perform almost the same with Giraph workloads. We can see that the local setup
 outperforms the remote setup in CDLP, WCC and BFS making the local setup between 0.44\% and 1.75\% faster. We can also see cases that the remote Ram-disk is better. Workloads PageRank(PR) and SSSP report that the remote
-setup is 4.32\% and 3.35\% quicker accordingly.
+setup is 4.32\% and 3.35\% quicker accordingly. The lower latency and high throughput of the remote Ram-disk manages to perform well in the giraph workloads compared to the slightly worse NVMe-oF exported NVMe of the previous setup.
 
 \subsection{Workload disk statistics}
  In this section we review the disk statistics of the workload runs. First we
