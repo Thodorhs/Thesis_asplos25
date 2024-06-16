@@ -2,9 +2,8 @@
 With our evaluation we try to answer: 
 
 \begin{enumerate}[itemsep=1.5pt]
-    \item Which remote storage option - remote device or memory - can match the latency of traditional local storage.
+    \item What overheads are present with remote devices in NBD and NVMe-oF.
     \item How does data granularity affect remote and local options (e.g. \SI{512}{B} and \SI{4}{KB}).
-    \item What overheads are presented with remote device systems NBD and NVMe-oF.
     \item Can SPDK NVMe-oF match up against local drive in big data analytics.
 \end{enumerate}
 
@@ -44,32 +43,34 @@ depth and 1 thread to measure the latency of all the device setups shown in Tabl
 
 \begin{table}[h!]
 \centering
-\resizebox{8.8cm}{2.4cm}{%
-\begin{tabular}{>{\RaggedRight}p{5cm} >{\RaggedRight\arraybackslash}p{9cm}}
-\toprule
+\begin{tabular}{|>{\centering\arraybackslash}m{3cm}|>{\RaggedRight\arraybackslash}m{5cm}|}
+\hline
 \textbf{Configuration} & \textbf{Description} \\
-\midrule
-Local NVMe drive & Local Non-Volatile Memory Express (NVMe) storage drive. \\
-\addlinespace[1em]
-Local Ram-disk & Storage using a portion of system RAM as a high-speed drive. \\
-\addlinespace[1em]
-Network Block Device (NBD) with NVMe & Network Block Device configured to use an NVMe drive over the network. \\
-\addlinespace[1em]
-Network Block Device (NBD) with Ram-disk & Network Block Device configured to use a RAM-disk over the network. \\
-\addlinespace[1em]
-Local NVMe drive with SPDK User-Space drivers & Local NVMe drive managed with Storage Performance Development Kit (SPDK) user-space drivers. \\
-\addlinespace[1em]
-Local Ram-disk with SPDK User-Space drivers & Local RAM-disk managed with SPDK user-space drivers. \\
-\addlinespace[1em]
-NVMe-oF NVMe with SPDK User-Space drivers & NVMe over Fabrics (NVMe-oF) using NVMe drives managed with SPDK user-space drivers. \\
-\addlinespace[1em]
-NVMe-oF Ram-disk with SPDK User-Space drivers & NVMe-oF using RAM-disk managed with SPDK user-space drivers. \\
-\bottomrule
+\hline
+LOC\_n & Local Non-Volatile Memory Express (NVMe) storage drive. \\
+\hline
+LOC\_r & Storage using a portion of system RAM as a high-speed drive. \\
+\hline
+NBD\_n & Network Block Device (NBD) configured to use an NVMe drive over the network. \\
+\hline
+NBD\_r & Network Block Device (NBD) configured to use a RAM-disk over the network. \\
+\hline
+SPDK\_n & Local NVMe drive managed with Storage Performance Development Kit (SPDK) user-space drivers. \\
+\hline
+SPDK\_r & Local RAM-disk managed with SPDK user-space drivers. \\
+\hline
+OF\_n & NVMe over Fabrics (NVMe-oF) using NVMe drives managed with SPDK user-space drivers. \\
+\hline
+OF\_r & NVMe-oF using RAM-disk managed with SPDK user-space drivers. \\
+\hline
 \end{tabular}
-}
 \caption{Storage device setups.}
 \label{tab:storage_configurations}
 \end{table}
+
+
+
+
 
 \paragraph{Netperf.} 
 Netperf ~\cite{netperf} is a benchmarking tool used to measure the performance of networking
@@ -92,14 +93,14 @@ Additionally, TeraHeap minimizes the garbage collection overhead by preventing
 the garbage collector from scanning the secondary heap. It takes advantage of
 frameworks' capability to designate certain objects for off-heap allocation and
 provides them with a hint-based method for relocating these objects to the
-secondary heap. We will use TeraHeap as a Real world system. We configure TeraHeap to apply the supplementary heap to local and remote block devices and compare the performances of each block device system.
+secondary heap. We will use TeraHeap as a Real world system. We configure TeraHeap to apply the supplementary heap to local, remote block devices, and remote Ram-disk and compare the performances of each block device system.
 
 \paragraph{ib\_read\_lat.} ib\_read\_lat is a micro-benchmark from the Perftest tool ~\cite{perftest}. specifically designed for measuring InfiniBand (IB) latency. It evaluates the time taken for data to be transferred and received between InfiniBand endpoints. We will use it to measure the latency of transferring data between two Mellanox Technologies ConnectX-3 MT2750 network cards using the IB port.
 
-\paragraph{Workloads and Execution time breakdown.} We employ eight memory-intensive tasks from Spark-Bench ~\cite{spark} and five LDBC Graphalytics suites for Giraph ~\cite{giraph}, generating datasets accordingly. Each experiment is run five times, and the average end-to-end execution time is recorded. Time breakdown includes 'other' time, S/D plus I/O time, minor GC time, and major GC time. 'Other' time covers mutator threads, potentially including I/O wait. The profiler operates with minimal overhead. We configure TeraHeap to allocate the first heap (H1) on DRAM and the second heap (H2) over a file in Local or Remote block device via memory-mapped I/O (mmio) we also limmit DRAM and H1 to a fixed size to create pressure and more I/O to H2. Table \ref{tab:workloads} shows the DRAM and H1 size in each workload, in Spark and Giraph, accordingly.
+\paragraph{Workloads and Execution time breakdown.} We employ eight memory-intensive tasks from Spark-Bench ~\cite{spark} and five LDBC Graphalytics suites for Giraph ~\cite{giraph}, generating datasets accordingly. For the remote Ram-disk, we use the five LDBC Graphalytics suites for Giraph and generate a smaller dataset to fit in the limited \SI{100}{G} Ram-disk exported with SPDK NVMe-oF. Each experiment is run five times, and the average end-to-end execution time is recorded. Time breakdown includes 'other' time, S/D plus I/O time, minor GC time, and major GC time. 'Other' time covers mutator threads, potentially including I/O wait. The profiler operates with minimal overhead. We configure TeraHeap to allocate the first heap (H1) on DRAM and the second heap (H2) over a file in Local or Remote block device or Remote Ram-disk via memory-mapped I/O (mmio) we also limmit DRAM and H1 to a fixed size to create pressure and more I/O to H2. Table \ref{tab:workloads} shows the DRAM and H1 size in each workload, in Spark and Giraph, accordingly. 
 \begin{table}[H]
 \centering
-\resizebox{8cm}{2.1cm}{%
+\resizebox{8cm}{3.1cm}{%
 \begin{tabular}{|c|l|r|r|}
 \hline
 \multicolumn{1}{|l|}{\textbf{Frameworks}} & \textbf{Benchmarks} & \multicolumn{1}{c|}{\textbf{TOTAL DRAM (GB)}} & \multicolumn{1}{c|}{\textbf{H1 (GB)}} \\ \hline
@@ -116,8 +117,14 @@ secondary heap. We will use TeraHeap as a Real world system. We configure TeraHe
  & WCC & 85 & 60 \\ \cline{2-4} 
  & BFS & 65 & 35 \\ \cline{2-4} 
  & SSSP & 90 & 50 \\ \hline
+\multirow{5}{*}{\rotatebox[origin=c]{90}{\shortstack{\textbf{Giraph}\\\textbf{Ram-disk}}}} & PageRank & 16 & 12 \\ \cline{2-4} 
+ & CDLP & 16 & 12 \\ \cline{2-4} 
+ & WCC & 16 & 12 \\ \cline{2-4} 
+ & BFS & 14 & 10 \\ \cline{2-4} 
+ & SSSP & 24 & 20 \\ \hline
 \end{tabular}%
 }
 \caption{TeraHeap workload configuration table.}
 \label{tab:workloads}
 \end{table}
+
