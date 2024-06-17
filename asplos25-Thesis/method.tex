@@ -35,8 +35,7 @@ Server 1    & \begin{tabular}[c]{@{}c@{}}Intel Xeon E5-2630\\  32 Cores @ 2.4 GH
 \paragraph{Flexible I/O (FIO) Tester.}
 FIO ~\cite{fio} is a widely used open-source tool in the Linux ecosystem for benchmarking
 and testing various I/O (input/output) workloads on storage devices. FIO
-provides detailed output reports, including metrics such as throughput, IOPS
-(input/output operations per second), latency, and CPU utilization. We configure FIO to use the
+provides detailed output reports, including metrics such as throughput, IOPS (input/output operations per second), latency, and CPU utilization. We configure FIO to use the
 libaio engine, random reads, direct I/O, \SI{512}{B} bytes and \SI{4}{KB} block size, 1 I/O
 depth and 1 thread to measure the latency of all the device setups shown in Table
 \ref{tab:storage_configurations}. 

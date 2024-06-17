@@ -11,8 +11,7 @@ of each storage system.
 \end{figure}
 
 We will analyze the results to determine the best setup for evaluating TeraHeap. Focusing on \SI{512}{B} local SSD (device granularity) FIO reports an average of 14.16 $\mu$s latency and for local Ram-disk, FIO reports 2.04 $\mu$s 6.94$\times$ better. First, we will investigate the remote option NBD (TCP). The exported SSD with NBD average latency is 4.22$\times$ higher than local with an average of 59.86 $\mu$s. Meaning that we get 45.7 $\mu$s more latency with NBD. By looking at the exported Ram-disk with NBD average latency is 1.08$\times$ better than the NBD SSD, meaning that there is a common overhead. This overhead can either be the NBD I/O path or high TCP latency. We use Netperf ~\cite{netperf} to measure the TCP latency and conduct experiments with \SI{512}{B} of data in each packet. Netperf reports 37.84 $\mu$s average
-latency. Adding local NVMe and TCP latency we have 52 $\mu$s 7.86 $\mu$s difference to the NBD
-(TCP) latency 59.86 $\mu$s. We conclude that the primary overhead is TCP, accounting for 63.2\% of the average latency in NBD NVMe.
+latency. Adding local NVMe and TCP latency we have 52 $\mu$s 7.86 $\mu$s difference to the NBD (TCP) latency 59.86 $\mu$s. We conclude that the primary overhead is TCP, accounting for 63.2\% of the average latency in NBD NVMe.
 
 Next, we investigate lowering the latency of the local I/O path to the device by using userspace drivers (SPDK). With userspace drivers, we bypass the layers of the kernel's I/O stack and eliminate context switches ~\cite{spdk}. We run FIO on the NVMe with SPDK and get 8.31 $\mu$s average latency 1.7$\times$ better compared to traditional drivers. We also try to lower
 the network latency with NVMe-oF NVMe with SPDK User-Space drivers. With the combination of SPDK’s user-space optimizations, the efficient protocol design of NVMe-oF compared to TCP and RDMA with Infiniband transport layer we manage to measure 25.69 $\mu$s average latency 2.33$\times$ better than SSD with NBD. 
@@ -55,13 +54,13 @@ evaluation using TeraHeap.
 \par This section compares TeraHeap performance of two setups one with local NVMe device and one with NVMe-oF exported NVMe with SPDK User-Space drivers.
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/bench_spark.pdf}\\
-\caption{TeraHeap Spark performance. local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\caption{TeraHeap Spark performance. Local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:bench_spark}
 \end{figure}
 Starting with Figure \ref{fig:bench_spark}. We can see the performance of TeraHeap with Spark workloads for both setups.
 The two TeraHeap setups local NVMe device (L) and NVMe-oF exported NVMe with
 SPDK (R) perform similarly with Spark workloads. We can see that the local setup
-outperforms the remote setup in Connected Components(CC), Linear Regression(LR), Logistic Regression(LgR), Shortest Path(SSSP), SVDPlusPlus(SVD) and SVM making the local setup between 2.4\% and 6\% faster except Shortest Path(SSSP) where it is 15\% faster. There are also cases where the remote setup is slightly better. Workloads Pagerank(PR), Triangle Counts(TR) report that the remote
+outperforms the remote setup in Connected Components (CC), Linear Regression (LR), Logistic Regression (LgR), Shortest Path (SSSP), SVDPlusPlus (SVD) and SVM making the local setup between 2.4\% and 6\% faster except Shortest Path (SSSP) where it is 15\% faster. There are also cases where the remote setup is slightly better. Workloads Pagerank (PR), Triangle Counts (TR) report that the remote
 setup is 0.83\% and 0.57\% quicker accordingly. Spark workloads
 read objects from H2 but don't change them  ~\cite{spark,teraheap} so heavy
 write operations are missing.
@@ -77,7 +76,7 @@ workloads for both setups NVMe device (L) and NVMe-oF exported NVMe with SPDK
 Here, due to the write operations, the remote setup (R) never manages to exceed the performance of the local setup (L). PageRank (PR), CDLP and BFS workloads are the ones that the remote setup struggles the most here local setup is 22.97\% 16.24\% and 13.07\% quicker accordingly. In the setups mentioned before the remote setup is losing performance due to major GC's taking more time to complete. Following up with WCC and SSSP workloads we can see that the local setup is only 1.54\%	and 3.97\% faster again here major GC's are the reason the remote setup is slower.
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/bench_giraph.pdf}\\
-\caption{TeraHeap Giraph performance. local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\caption{TeraHeap Giraph performance. Local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:bench_giraph}
 \end{figure}
 
@@ -86,12 +85,12 @@ Here, due to the write operations, the remote setup (R) never manages to exceed 
 \par This section compares TeraHeap performance of two setups one with local NVMe device and one with NVMe-oF exported Ram-disk with SPDK User-Space drivers. Figure \ref{fig:ram_giraph} illustrates the performance of TeraHeap with Giraph workloads for both setups.
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/ram_giraph.pdf}\\
-\caption{TeraHeap Giraph performance. local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
+\caption{TeraHeap Giraph performance. Local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
 \label{fig:ram_giraph}
 \end{figure}
 Here the TeraHeap setups local NVMe device (L) and NVMe-oF exported Ram-disk with
 SPDK (R) perform almost the same with Giraph workloads. We can see that the local setup
-outperforms the remote setup in CDLP, WCC and BFS making the local setup between 0.44\% and 1.75\% faster. We can also see cases that the remote Ram-disk is better. Workloads PageRank(PR) and SSSP report that the remote
+outperforms the remote setup in CDLP, WCC and BFS making the local setup between 0.44\% and 1.75\% faster. We can also see cases that the remote Ram-disk is better. Workloads PageRank (PR) and SSSP report that the remote
 setup is 4.32\% and 3.35\% quicker accordingly. The lower latency and high throughput of the remote Ram-disk manages to perform well in the giraph workloads compared to the slightly worse NVMe-oF exported NVMe of the previous setup.
 
 \subsection{Workload disk statistics}
@@ -104,42 +103,42 @@ setup is 4.32\% and 3.35\% quicker accordingly. The lower latency and high throu
  Next we examine Giraph with NVMe device. figures \ref{fig:giraph_r} and \ref{fig:giraph_w} show
  reads and writes accordingly. Focusing on the writes we can see that the data
  in Gigabytes for both the local setup (L) and the remote setup (R) are close.
- In the PageRank(PR)	and CDLP workloads where the local setup (L) has the
+ In the PageRank (PR) and CDLP workloads where the local setup (L) has the
  best performance compared to the remote setup (R) (figure
  \ref{fig:bench_giraph} 22.97\% and 16.24\% faster) we can see more reads
  (figure \ref{fig:giraph_r}) for the remote setup due to more major GC's.
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/spark_r.pdf}\\
-\caption{TeraHeap Spark workloads reads (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\caption{TeraHeap Spark workloads reads (GB). Local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:spark_r}
 \end{figure}
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/spark_w.pdf}\\
-\caption{TeraHeap Spark workloads writes (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\caption{TeraHeap Spark workloads writes (GB). Local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:spark_w}
 \end{figure}
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/giraph_r.pdf}\\
-\caption{TeraHeap Giraph workloads reads (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\caption{TeraHeap Giraph workloads reads (GB). Local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:giraph_r}
 \end{figure}
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/giraph_w.pdf}\\
-\caption{TeraHeap Giraph workloads writes (GB). local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
+\caption{TeraHeap Giraph workloads writes (GB). Local NVMe device (L) compared to NVMe-oF exported NVMe with SPDK (R).}
 \label{fig:giraph_w}
 \end{figure}
  Moving on to the Giraph local NVMe device compared to NVMe-oF exported Ram-disk with SPDK. Figures \ref{fig:ram_gir_r} and \ref{fig:ram_gir_w} show reads and
  writes accordingly. We can see the reads and the writes in Gigabytes for the local setup (L) compared to the remote setup (R) are almost the same.
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/ram_gir_r.pdf}\\
-\caption{TeraHeap Giraph workloads Reads (GB). local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
+\caption{TeraHeap Giraph workloads Reads (GB). Local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
 \label{fig:ram_gir_r}
 \end{figure}
 
 \begin{figure}[H]
   \includegraphics[width=\linewidth]{figures/ram_gir_w.pdf}\\
-\caption{TeraHeap Giraph workloads writes (GB). local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
+\caption{TeraHeap Giraph workloads writes (GB). Local NVMe device (L) compared to NVMe-oF exported Ram-disk with SPDK (R).}
 \label{fig:ram_gir_w}
 \end{figure}
